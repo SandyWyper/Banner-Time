@@ -3,7 +3,7 @@
   // build stylesheet
   var styleBanner = document.createElement("style");
   styleBanner.innerHTML =
-    "#banner-time{user-select: none;}#banner-time a{color: inherit;text-decoration: none;}#banner-time #desktop-banner-slides {display: none !important;}#banner-time #mobile-banner-slides {display: block !important;}@media only screen and (min-width: 768px) {#banner-time #desktop-banner-slides {display: block !important;}#banner-time #mobile-banner-slides{display: none !important;}}";
+    "#banner-time{user-select: none;overflow:hidden;}#banner-time a{color: inherit;text-decoration: none;}#banner-time #desktop-banner-slides {display: none !important;}#banner-time #mobile-banner-slides {display: block !important;}@media only screen and (min-width: 768px) {#banner-time #desktop-banner-slides {display: block !important;}#banner-time #mobile-banner-slides{display: none !important;}}";
   // build banner element
   var bannerDiv = document.createElement("div");
   bannerDiv.id = "banner-time";
@@ -17,6 +17,7 @@
       startTime: [2019],
       endTime: [2080],
       timeZone: 0,
+      bannerLink: "",
       transition: {
         type: "fade",
         displayDuration: 5000,
@@ -27,7 +28,6 @@
         desktop: ["STOP!!", "BANNER TIME!!"],
         mobile: ["STOP!!", "BANNER TIME!!"]
       },
-      bannerLink: "",
       CSS: {
         display: "flex",
         "justify-content": "center",
@@ -38,15 +38,21 @@
         height: "43px",
         "line-height": "30px",
         width: "100%",
-        "font-family": "arial",
+        "font-family": "helvetica",
         "font-size": "30px",
         "z-index": "25"
       }
     };
 
+    // Ensure that the banner that is run is the correct one:
+    // Eg. Most recent start time, and end time has not passed
+    let relevantBannerIndex = getRelevantBannerIndex(arguments);
     // Create options by extending defaults with the passed in arugments
-    if (arguments[0] && typeof arguments[0] === "object") {
-      this.options = extendDefaults(defaults, arguments[0]);
+    if (
+      arguments[relevantBannerIndex] &&
+      typeof arguments[relevantBannerIndex] === "object"
+    ) {
+      this.options = extendDefaults(defaults, arguments[relevantBannerIndex]);
     } else {
       this.options = defaults;
     }
@@ -107,6 +113,26 @@ function checkTime(starts, ends, timeZone) {
   } else {
     return false;
   }
+}
+function getRelevantBannerIndex(arguments) {
+  let mostRecentStartTime = 0;
+  let relevantBannerIndex = 0;
+  var timeNow = Date.now();
+
+  for (let x = 0; x < arguments.length; x++) {
+    let startTimeGiven = arguments[x].startTime || [2019];
+    startTimeGiven = new Date(Date.UTC(...startTimeGiven));
+    startTimeGiven = startTimeGiven.getTime();
+    let endTimeGiven = arguments[x].endTime || [2080];
+    endTimeGiven = new Date(Date.UTC(...endTimeGiven));
+    endTimeGiven = endTimeGiven.getTime();
+
+    if (mostRecentStartTime < startTimeGiven && timeNow < endTimeGiven) {
+      mostRecentStartTime = startTimeGiven;
+      relevantBannerIndex = x;
+    }
+  }
+  return relevantBannerIndex;
 }
 
 function initBanner(options) {
@@ -223,7 +249,6 @@ function slide(transition, numberOfSlides, screen) {
 
   function runTransition() {
     $currentSlide = $("#" + screen + "-banner-slides .js-slide-" + count);
-
     $currentSlide
       .animate(
         {
@@ -232,12 +257,13 @@ function slide(transition, numberOfSlides, screen) {
         transition.speed
       )
       .delay(transition.displayDuration)
-      .animate({ left: "300%" }, transition.speed)
-      .delay(transition.interval, function() {
-        $currentSlide.css({ left: "-200%" });
-        count = count < numberOfSlides - 1 ? count + 1 : 0;
-        $(this).stop();
-        runTransition();
+      .animate({ left: "300%" }, transition.speed, function() {
+        setTimeout(function() {
+          $currentSlide.css({ left: "-200%" });
+          count = count < numberOfSlides - 1 ? count + 1 : 0;
+          $(this).stop();
+          runTransition();
+        }, transition.interval);
       });
   }
 }
