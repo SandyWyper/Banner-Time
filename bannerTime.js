@@ -114,6 +114,7 @@ function checkTime(starts, ends, timeZone) {
     return false;
   }
 }
+
 function getRelevantBannerIndex(arguments) {
   let mostRecentStartTime = 0;
   let relevantBannerIndex = 0;
