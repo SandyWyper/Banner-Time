@@ -1,11 +1,11 @@
 (function() {
   "use:strict";
   // build stylesheet
-  var styleBanner = document.createElement("style");
+  let styleBanner = document.createElement("style");
   styleBanner.innerHTML =
     "#banner-time{user-select: none;overflow:hidden;}#banner-time a{color: inherit;text-decoration: none;}#banner-time #desktop-banner-slides {display: none !important;}#banner-time #mobile-banner-slides {display: block !important;}@media only screen and (min-width: 768px) {#banner-time #desktop-banner-slides {display: block !important;}#banner-time #mobile-banner-slides{display: none !important;}}";
   // build banner element
-  var bannerDiv = document.createElement("div");
+  let bannerDiv = document.createElement("div");
   bannerDiv.id = "banner-time";
   // insert elements into the dom
   document.head.appendChild(styleBanner);
@@ -13,7 +13,7 @@
 
   this.Banner = function() {
     // option defaults
-    var defaults = {
+    let defaults = {
       startTime: [2019],
       endTime: [2080],
       timeZone: 0,
@@ -38,7 +38,7 @@
         height: "43px",
         "line-height": "30px",
         width: "100%",
-        "font-family": "helvetica",
+        "font-family": "inherit",
         "font-size": "30px",
         "z-index": "25"
       }
@@ -64,7 +64,7 @@
       return defaults;
     }
 
-    var timeWindow = checkTime(
+    let timeWindow = checkTime(
       this.options.startTime,
       this.options.endTime,
       this.options.timeZone
@@ -81,33 +81,33 @@
 function checkTime(starts, ends, timeZone) {
   //take date input from settings.
   //check for timezone option and adjust start/finsh dates to be UTC.
-  var adjustTime = (time, timezone) => {
-    var newTime = [];
+  const adjustTime = (time, timezone) => {
+    let newTime = [];
     while (time.length < 4) {
-      if (time.length === 1) {
-        time.push(0);
-      } else if (time.length === 2) {
+      if (time.length === 2) {
         time.push(1);
       } else {
         time.push(0);
       }
     }
-    for (var x = 0; x < time.length; x++) {
-      if (x === 3) {
-        newTime.push(time[x] + timezone);
+
+    time.forEach(function(int, index) {
+      if (index === 3) {
+        newTime.push(int + timezone);
       } else {
-        newTime.push(time[x]);
+        newTime.push(int);
       }
-    }
+    });
+
     return newTime;
   };
 
-  var showBanner = new Date(Date.UTC(...adjustTime(starts, timeZone)));
-  var hideBanner = new Date(Date.UTC(...adjustTime(ends, timeZone)));
+  let showBanner = new Date(Date.UTC(...adjustTime(starts, timeZone)));
+  let hideBanner = new Date(Date.UTC(...adjustTime(ends, timeZone)));
   showBanner = showBanner.getTime();
   hideBanner = hideBanner.getTime();
   //when web user's page loads check banner start UTC time compared to current UTC and display banner or not.
-  var timeNow = Date.now();
+  const timeNow = Date.now();
   if (timeNow > showBanner && timeNow < hideBanner) {
     return true;
   } else {
@@ -115,32 +115,33 @@ function checkTime(starts, ends, timeZone) {
   }
 }
 
-function getRelevantBannerIndex(arguments) {
+function getRelevantBannerIndex() {
   let mostRecentStartTime = 0;
   let relevantBannerIndex = 0;
-  var timeNow = Date.now();
+  const timeNow = Date.now();
 
-  for (let x = 0; x < arguments.length; x++) {
-    let startTimeGiven = arguments[x].startTime || [2019];
+  Array.from(...arguments).forEach(function(arg, index) {
+    let startTimeGiven = arg.startTime || [2019];
     startTimeGiven = new Date(Date.UTC(...startTimeGiven));
     startTimeGiven = startTimeGiven.getTime();
-    let endTimeGiven = arguments[x].endTime || [2080];
+    let endTimeGiven = arg.endTime || [2080];
     endTimeGiven = new Date(Date.UTC(...endTimeGiven));
     endTimeGiven = endTimeGiven.getTime();
 
     if (mostRecentStartTime < startTimeGiven && timeNow < endTimeGiven) {
       mostRecentStartTime = startTimeGiven;
-      relevantBannerIndex = x;
+      relevantBannerIndex = index;
     }
-  }
+  });
+
   return relevantBannerIndex;
 }
 
 function initBanner(options) {
   // Fill DOM element
-  var $banner = $("#banner-time");
+  let $banner = $("#banner-time");
 
-  var bannerHTML = buildBannerElements(
+  let bannerHTML = buildBannerElements(
     options.bannerText.desktop,
     options.bannerText.mobile,
     options.bannerLink
@@ -154,48 +155,39 @@ function initBanner(options) {
 }
 
 function buildBannerElements(deskText, mobText, link) {
-  var bannerConstructed = "";
+  let bannerConstructed = "";
 
   if (deskText) {
     bannerConstructed += '<div id="desktop-banner-slides">';
 
-    for (var x = 0; x < deskText.length; x++) {
-      bannerConstructed +=
-        '<div class="js-slide-' +
-        x +
-        '" ' +
-        (x > 0 ? 'style="display:none"' : 'style="display:block"') +
-        ">";
+    deskText.forEach(function(text, index) {
+      bannerConstructed += `<div class="js-slide-${index}" 
+        ${index > 0 ? 'style="display:none"' : 'style="display:block"'}>`;
       if (link) {
-        bannerConstructed +=
-          '<a href="' + link + '"><p>' + deskText[x] + "</p></a></div>";
+        bannerConstructed += `<a href="${link}"><p>${text}</p></a></div>`;
       } else {
-        bannerConstructed += "<p>" + deskText[x] + "</p></div>";
+        bannerConstructed += `<p>${text}</p></div>`;
       }
-    }
+    });
 
-    bannerConstructed += "</div>";
+    bannerConstructed += `</div>`;
   }
 
   if (mobText) {
-    bannerConstructed += '<div id="mobile-banner-slides">';
+    bannerConstructed += `<div id="mobile-banner-slides">`;
 
-    for (var y = 0; y < mobText.length; y++) {
-      bannerConstructed +=
-        '<div class="js-slide-' +
-        y +
-        '" ' +
-        (y > 0 ? 'style="display:none"' : 'style="display:block"') +
-        ">";
+    mobText.forEach(function(text, index) {
+      bannerConstructed += `<div class="js-slide-${index}" ${
+        index > 0 ? 'style="display:none"' : 'style="display:block"'
+      }>`;
       if (link) {
-        bannerConstructed +=
-          '<a href="' + link + '"><p>' + mobText[y] + "</p></a></div>";
+        bannerConstructed += `<a href="${link}"><p>${text}</p></a></div>`;
       } else {
-        bannerConstructed += "<p>" + mobText[y] + "</p></div>";
+        bannerConstructed += `<p>${text}</p></div>`;
       }
-    }
+    });
 
-    bannerConstructed += "</div>";
+    bannerConstructed += `</div>`;
   }
 
   return bannerConstructed;
@@ -215,12 +207,12 @@ function transition(transition, numberOfSlides, screen) {
 }
 
 function fade(transition, numberOfSlides, screen) {
-  var count = 0;
-  var $currentSlide;
+  let count = 0;
+  let $currentSlide;
   runTransition();
 
   function runTransition() {
-    $currentSlide = $("#" + screen + "-banner-slides .js-slide-" + count);
+    $currentSlide = $(`#${screen}-banner-slides .js-slide-${count}`);
 
     $currentSlide
       .delay(transition.interval)
@@ -236,9 +228,9 @@ function fade(transition, numberOfSlides, screen) {
 }
 
 function slide(transition, numberOfSlides, screen) {
-  var count = 0;
-  var $currentSlide;
-  $("#" + screen + "-banner-slides").css({
+  let count = 0;
+  let $currentSlide;
+  $(`#${screen}-banner-slides`).css({
     position: "relative",
     width: "100%",
     height: "100%"
@@ -249,7 +241,7 @@ function slide(transition, numberOfSlides, screen) {
   runTransition();
 
   function runTransition() {
-    $currentSlide = $("#" + screen + "-banner-slides .js-slide-" + count);
+    $currentSlide = $(`#${screen}-banner-slides .js-slide-${count}`);
     $currentSlide
       .animate(
         {
@@ -270,7 +262,7 @@ function slide(transition, numberOfSlides, screen) {
 }
 
 function styleSlides(screen) {
-  $("#" + screen + "-banner-slides > div").css({
+  $(`#${screen}-banner-slides > div`).css({
     position: "absolute",
     height: "100%",
     left: "-200%",
