@@ -77,9 +77,11 @@ const thirdBanner = {
 
 const myXmasBanner = new Banner(firstBanner, secondBanner, thirdBanner);
 ```
-5. If your shop isn't GTM then be sure to set your time zone in the settings `timeZone: -8`.  This will adjust any start and end times accordingly.
+
+5. If your shop isn't GTM then be sure to set your time zone in the settings `timeZone: -8`. This will adjust any start and end times accordingly.
 
 6. Remeber to set the text output for both desktop and mobile screens.
+
 ---
 
 ### Settings
