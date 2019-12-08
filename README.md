@@ -1,7 +1,5 @@
 # Banner Time
 
-- Make destoptext the default - if no mobile text then just use the destop text.
-
 <div>
 <img src="https://sandywyper.github.io/Banner-Time/banner-time.jpg" style="max-width: 400px;width:100%">
 </div>
