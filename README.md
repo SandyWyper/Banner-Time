@@ -1,15 +1,17 @@
 # Banner Time
 
+- Make destoptext the default - if no mobile text then just use the destop text.
+
 <div>
-<img src="https://sandywyper.github.io/Banner-Time/banner-time.jpg" style="max-width: 400px;">
+<img src="https://sandywyper.github.io/Banner-Time/banner-time.jpg" style="max-width: 400px;width:100%">
 </div>
 
 **Version 1.0.0** - [Change log](CHANGELOG.md)
 
 A simple sale baner that can be scheduled to show for a set time.
 
-- [Example 1- Fade](https://codepen.io/SandyWyper/full/qBBLaVg)
-- [Example 2 - Slide](https://codepen.io/SandyWyper/full/yLLGzOx)
+- [Example 1 - Fade](https://codepen.io/SandyWyper/full/yLLGzOx)
+- [Example 2 - Slide](https://codepen.io/SandyWyper/full/qBBLaVg)
 
 ## Getting started
 
@@ -48,6 +50,36 @@ If you dont have JQuery in your project already, find it [here](https://jquery.c
     const myBanner = new Banner(bannerSettings);
 ```
 
+You can set up as many banners as you like, and the one with the most recent start time (and the 'endTime' has not yet expired) will display.
+
+```
+const firstBanner = {
+  startTime: [2019,11,20],
+   bannerText: {
+        desktop: ["5 Days Until Xmas", "Shop now"],
+        mobile: ["5 Days To Go!", "Xmas time!"]
+      }
+}
+const secondBanner = {
+  startTime: [2019,11,21],
+   bannerText: {
+        desktop: ["4 Days Until Xmas", "Shop now"],
+        mobile: ["4 Days To Go!", "Xmas time!"]
+      }
+}
+const thirdBanner = {
+  startTime: [2019,11,22],
+   bannerText: {
+        desktop: ["3 Days Until Xmas", "Shop now"],
+        mobile: ["3 Days To Go!", "Xmas time!"]
+      }
+}
+
+const myXmasBanner = new Banner(firstBanner, secondBanner, thirdBanner);
+```
+5. If your shop isn't GTM then be sure to set your time zone in the settings `timeZone: -8`.  This will adjust any start and end times accordingly.
+
+6. Remeber to set the text output for both desktop and mobile screens.
 ---
 
 ### Settings
