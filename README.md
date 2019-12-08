@@ -1,26 +1,21 @@
 # Banner Time
 
+<div>
+<img src="https://sandywyper.github.io/Banner-Time/banner-time.jpg" style="max-width: 400px;">
+</div>
+
 **Version 1.0.0** - [Change log](CHANGELOG.md)
 
-{ breif intro summary }
 A simple sale baner that can be scheduled to show for a set time.
 
-{ demos }
+- [Example 1- Fade](https://codepen.io/SandyWyper/full/qBBLaVg)
+- [Example 2 - Slide](https://codepen.io/SandyWyper/full/yLLGzOx)
 
-<p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="html,result" data-user="SandyWyper" data-slug-hash="qBBLaVg" data-preview="true" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Banner Time - Slide">
-  <span>See the Pen <a href="https://codepen.io/SandyWyper/pen/qBBLaVg">
-  Banner Time - Slide</a> by Sandy Wyper (<a href="https://codepen.io/SandyWyper">@SandyWyper</a>)
-  on <a href="https://codepen.io">CodePen</a>.</span>
-</p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-{ Getting started }
-
----
+## Getting started
 
 ### Set-up
 
-1. Download {javscript file} and put it in your site directory.
+1. Download Banner-Time and put the '/dist/bannerTime.js' file in your site directory.
 2. Reference this file from a script tag below where you include Jquery.
 
 ```
@@ -55,18 +50,6 @@ If you dont have JQuery in your project already, find it [here](https://jquery.c
 
 ---
 
-#### Contributing
-
-PLEASE review CONTRIBUTING.markdown prior to requesting a feature, filing a pull request or filing an issue.
-
-```
-some code
-```
-
-{ settings }
-
----
-
 ### Settings
 
 | Option           | Type                | Default                                                           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                         |
@@ -82,6 +65,18 @@ some code
 | speed            | number              | 1000                                                              | Time in milliseconds of the transitions.                                                                                                                                                                                                                                                                                                                                                                                                            |
 | **CSS**          | object (nested...?) | Any CSS can be added written as string key-value pairs; \*\*      | All the CSS you want attribute to each slide.                                                                                                                                                                                                                                                                                                                                                                                                       |
 | any CSS property | string              |                                                                   |
+
+---
+
+#### Contributing
+
+PLEASE review CONTRIBUTING.markdown prior to requesting a feature, filing a pull request or filing an issue.
+
+---
+
+#### Acknowledgements
+
+This projected started out by following a modal window [tutorial](https://scotch.io/tutorials/building-your-own-javascript-modal-plugin) written by [Ken Wheeler](https://twitter.com/ken_wheeler). Then, in order to follow an example of an open source project, I have borrowed heavily from his [Slick Slider](https://github.com/kenwheeler/slick) repo. Big thanks to him and anyone else who would like to contribute.
 
 ## License and copyright
 
