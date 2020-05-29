@@ -18,7 +18,7 @@ A simple sale baner that can be scheduled to show for a set time.
 1. Download Banner-Time and put the '/dist/bannerTime.js' file in your site directory.
 2. Reference this file from a script tag below where you include Jquery.
 
-```
+```html
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="bannerTime.js"></script>
 ```
@@ -29,51 +29,58 @@ If you dont have JQuery in your project already, find it [here](https://jquery.c
 
 4. Insert your banner settings.
 
-```
-    const bannerSettings =  {
-      startTime: [2019, 10, 9],
-      endTime: [2020, 0, 1],
-      CSS: {
-        "border-bottom": "2px solid black",
-        "background-color": "darkgrey",
-        color: "white"
-      },
-      transition: {
-        type: "slide",
-        displayDuration: 5000,
-        speed: 700,
-        interval: 900
-      }
-    }
-    const myBanner = new Banner(bannerSettings);
+```html
+<script>
+  const bannerSettings = {
+    startTime: [2019, 10, 9],
+    endTime: [2020, 0, 1],
+    CSS: {
+      'border-bottom': '2px solid black',
+      'background-color': 'darkgrey',
+      color: 'white',
+    },
+    transition: {
+      type: 'slide',
+      displayDuration: 5000,
+      speed: 700,
+      interval: 900,
+    },
+  };
+  const myBanner = new Banner(bannerSettings);
+</script>
 ```
 
 You can set up as many banners as you like, and the one with the most recent start time (and the 'endTime' has not yet expired) will display.
 
-```
-const firstBanner = {
-  startTime: [2019,11,20],
-   bannerText: {
-        desktop: ["5 Days Until Xmas", "Shop now"],
-        mobile: ["5 Days To Go!", "Xmas time!"]
-      }
-}
-const secondBanner = {
-  startTime: [2019,11,21],
-   bannerText: {
-        desktop: ["4 Days Until Xmas", "Shop now"],
-        mobile: ["4 Days To Go!", "Xmas time!"]
-      }
-}
-const thirdBanner = {
-  startTime: [2019,11,22],
-   bannerText: {
-        desktop: ["3 Days Until Xmas", "Shop now"],
-        mobile: ["3 Days To Go!", "Xmas time!"]
-      }
-}
+```html
+<script>
+  const firstBanner = {
+    startTme: [2019, 11, 22],
+    endTime: [2019, 11, 23],
+    bannerText: {
+      desktop: ['3 Days Until Xmas', 'Shop now'],
+      mobile: ['3 Days To Go!', 'Xmas time!'],
+    },
+  };
+  const secondBanner = {
+    startTime: [2019, 11, 23],
+    endTime: [2019, 11, 24],
+    bannerText: {
+      desktop: ['2 Days Until Xmas', 'Shop now'],
+      mobile: ['2 Days To Go!', 'Xmas time!'],
+    },
+  };`
+  const thirdBanner = {
+    startTime: [2019, 11, 24],
+    endTime: [2019, 11, 25],
+    bannerText: {
+      desktop: ['1 Day Until Xmas', 'Shop now'],
+      mobile: ['1 Day To Go!', 'Delivery NOT guaranteed!'],
+    },
+  };
 
-const myXmasBanner = new Banner(firstBanner, secondBanner, thirdBanner);
+  const myXmasBanner = new Banner(firstBanner, secondBanner, thirdBanner);
+</script>
 ```
 
 5. If your shop isn't GTM then be sure to set your time zone in the settings `timeZone: -8`. This will adjust any start and end times accordingly.
@@ -86,9 +93,9 @@ const myXmasBanner = new Banner(firstBanner, secondBanner, thirdBanner);
 
 | Option           | Type                | Default                                                           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | ---------------- | ------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| startTime        | number array        | [2019]                                                            | [**Individual date and time component values.**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#Individual_date_and_time_component_values "MDN Web Docs") Must be an array of numbers to represent the date and time. `[YYYY,MM,DD,hr,min]` (year, month, day, hour, minute, second, and millisecond) Any missing fields are given the lowest possible value (1 for the day and 0 for every other component. |
+| startTime        | number array        | [2019]                                                            | [**Individual date and time component values.**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#Individual_date_and_time_component_values 'MDN Web Docs') Must be an array of numbers to represent the date and time. `[YYYY,MM,DD,hr,min]` (year, month, day, hour, minute, second, and millisecond) Any missing fields are given the lowest possible value (1 for the day and 0 for every other component. |
 | endTime          | number array        | [2080]                                                            | The time the banner will finish displaying. See startTime for formatting.                                                                                                                                                                                                                                                                                                                                                                           |
-| timeZone         | number              | 0                                                                 | Times are calculated in [UTC](http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/UTC#description "MDN Web Docs"). Time zone of the shops(servers) location should be provided for corrrect start stop times. Number between -12 and 12.                                                                                                                                                                           |
+| timeZone         | number              | 0                                                                 | Times are calculated in [UTC](http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/UTC#description 'MDN Web Docs'). Time zone of the shops(servers) location should be provided for corrrect start stop times. Number between -12 and 12.                                                                                                                                                                           |
 | bannerLink       | string              |                                                                   | Enter the path of your desired link. Eg. `bannerLink: "/products/fidget-spinner"`                                                                                                                                                                                                                                                                                                                                                                   |
 | **transition**   | object (nested..?)  | The default values of; **type, displayDuration, interval, speed** | A nested object with the keys and values for that transition. Declare the ones you need and the rest will remain default.                                                                                                                                                                                                                                                                                                                           |
 | type             | string              | "fade"                                                            | The type of transition between each slide.                                                                                                                                                                                                                                                                                                                                                                                                          |
